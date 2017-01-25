@@ -133,6 +133,7 @@ function commerce_license_entity_info() {
   $return = array(
     'commerce_license' => array(
       'label' => t('Commerce License'),
+      'label callback' => 'commerce_license_label',
       'controller class' => 'CommerceLicenseEntityController',
       'base table' => 'commerce_license',
       'revision table' => 'commerce_license_revision',
@@ -175,6 +176,13 @@ function commerce_license_entity_info() {
     );
   }
   return $return;
+}
+
+/**
+ * Entity label callback: returns the label for an individual license.
+ */
+function commerce_license_label($entity, $entity_type) {
+  return t('License @id', array('@id' => $entity->license_id));
 }
 
 /**
