@@ -412,7 +412,10 @@ function commerce_license_commerce_line_item_presave($line_item) {
  */
 function commerce_license_commerce_line_item_delete($line_item) {
   if (!empty($line_item->commerce_license)) {
-    entity_delete('commerce_license', $line_item->commerce_license[LANGUAGE_NONE][0]['target_id']);
+    $license = entity_load_single('commerce_license', $line_item->commerce_license[LANGUAGE_NONE][0]['target_id']);
+    if ($license && $license->status == COMMERCE_LICENSE_CREATED && variable_get('commerce_license_line_item_cleanup', TRUE)) {
+      entity_delete('commerce_license', $license->license_id);
+    }
   }
 }
 

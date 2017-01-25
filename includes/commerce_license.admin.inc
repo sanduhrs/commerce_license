@@ -36,6 +36,17 @@ function commerce_license_settings_form($form, &$form_state) {
     '#options' => $line_item_types,
   );
 
+  $form['commerce_license_line_item_cleanup'] = array(
+    '#title' => t('Line item cleanup'),
+    '#type' => 'radios',
+    '#description' => t('Whether to automatically delete empty licenses along with the cart line items they are linked to. Disable this if you have special license workflows outside of the normal cart process and need to preserve newly-created licenses even if their line item is deleted.'),
+    '#options' => array(
+      FALSE => t('Off'),
+      TRUE => t('On'),
+    ),
+    '#default_value' => variable_get('commerce_license_line_item_cleanup', TRUE),
+  );
+
   if (module_exists('advancedqueue')) {
     $form['refresh_settings'] = array(
       '#type' => 'fieldset',
