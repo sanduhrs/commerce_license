@@ -110,6 +110,17 @@ function commerce_license_views_default_views() {
   $handler->display->display_options['relationships']['product']['id'] = 'product';
   $handler->display->display_options['relationships']['product']['table'] = 'commerce_license';
   $handler->display->display_options['relationships']['product']['field'] = 'product';
+  /* Relationship: Commerce License: Reverse Line Item Lookup */
+  $handler->display->display_options['relationships']['reverse_commerce_license_commerce_line_item']['id'] = 'reverse_commerce_license_commerce_line_item';
+  $handler->display->display_options['relationships']['reverse_commerce_license_commerce_line_item']['table'] = 'commerce_license';
+  $handler->display->display_options['relationships']['reverse_commerce_license_commerce_line_item']['field'] = 'reverse_commerce_license_commerce_line_item';
+  $handler->display->display_options['relationships']['reverse_commerce_license_commerce_line_item']['ui_name'] = 'Commerce License: Reverse Line Item Lookup';
+  $handler->display->display_options['relationships']['reverse_commerce_license_commerce_line_item']['label'] = 'Line Item';
+  /* Relationship: Commerce Line Item: Order ID */
+  $handler->display->display_options['relationships']['order_id']['id'] = 'order_id';
+  $handler->display->display_options['relationships']['order_id']['table'] = 'commerce_line_item';
+  $handler->display->display_options['relationships']['order_id']['field'] = 'order_id';
+  $handler->display->display_options['relationships']['order_id']['relationship'] = 'reverse_commerce_license_commerce_line_item';
   /* Field: Bulk operations: Commerce License */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'commerce_license';
@@ -202,6 +213,7 @@ function commerce_license_views_default_views() {
   $handler->display->display_options['fields']['license_id']['id'] = 'license_id';
   $handler->display->display_options['fields']['license_id']['table'] = 'commerce_license';
   $handler->display->display_options['fields']['license_id']['field'] = 'license_id';
+  $handler->display->display_options['fields']['license_id']['separator'] = '';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
@@ -238,6 +250,13 @@ function commerce_license_views_default_views() {
   $handler->display->display_options['fields']['expires']['table'] = 'commerce_license';
   $handler->display->display_options['fields']['expires']['field'] = 'expires';
   $handler->display->display_options['fields']['expires']['date_format'] = 'medium';
+  /* Field: Commerce Order: Order ID */
+  $handler->display->display_options['fields']['order_id']['id'] = 'order_id';
+  $handler->display->display_options['fields']['order_id']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
+  $handler->display->display_options['fields']['order_id']['relationship'] = 'order_id';
+  $handler->display->display_options['fields']['order_id']['label'] = 'Original Order';
+  $handler->display->display_options['fields']['order_id']['link_to_order'] = 'admin';
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'users';
@@ -336,14 +355,20 @@ function commerce_license_views_default_views() {
     t('No licenses found.'),
     t('User'),
     t('Commerce Product'),
+    t('Line Item'),
+    t('Order'),
+    t('Commerce License'),
+    t('- Choose an operation -'),
+    t('Delete license'),
     t('License ID'),
     t('.'),
-    t(','),
     t('Product'),
     t('Access details'),
     t('Type'),
     t('Status'),
     t('Granted'),
+    t('Expires'),
+    t('Original Order'),
     t('Page'),
   );
   $views[$view->name] = $view;
