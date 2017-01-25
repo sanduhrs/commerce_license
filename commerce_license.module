@@ -428,12 +428,20 @@ function commerce_license_commerce_line_item_delete($line_item) {
 }
 
 /**
+ * Implements hook_commerce_order_insert().
+ */
+function commerce_license_commerce_order_insert($order) {
+  // Make sure the license is assigned to the correct user.
+  commerce_license_commerce_order_update($order);
+}
+
+/**
  * Implements hook_commerce_order_update().
  */
 function commerce_license_commerce_order_update($order) {
   $licenses = commerce_license_get_order_licenses($order);
   // The order was canceled, revoke all of its licenses.
-  if ($order->status != $order->original->status && $order->status == 'canceled') {
+  if (isset($order->original) && $order->status != $order->original->status && $order->status == 'canceled') {
     foreach ($licenses as $license) {
       $license->revoke();
     }
