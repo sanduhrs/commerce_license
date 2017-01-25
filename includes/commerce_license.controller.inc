@@ -25,13 +25,25 @@ class CommerceLicenseEntityController extends EntityBundlePluginEntityController
   /**
    * Overrides EntityBundlePluginEntityController::saveRevision().
    *
-   * Maintains the revision_created and revision_ended timestamps.
+   * Maintains the revision_created and revision_ended timestamps and the
+   * revision_uid column.
    */
   protected function saveRevision($entity) {
     if ($entity->is_new_revision) {
       $current_time = commerce_license_get_time();
-      $entity->revision_created = $current_time;
-      $entity->revision_ended = 0;
+
+      if (!isset($entity->revision_created)) {
+        $entity->revision_created = $current_time;
+      }
+      if (!isset($entity->revision_ended)) {
+        $entity->revision_ended = 0;
+      }
+      if (!isset($entity->revision_uid)) {
+        $entity->revision_uid = $GLOBALS['user']->uid;
+      }
+      if (!isset($entity->log)) {
+        $entity->log = '';
+      }
 
       // A previous revision exists, close it.
       if (!empty($entity->revision_id)) {
@@ -40,6 +52,9 @@ class CommerceLicenseEntityController extends EntityBundlePluginEntityController
           ->condition('revision_id', $entity->revision_id)
           ->execute();
       }
+    }
+    else {
+      unset($entity->log);
     }
 
     parent::saveRevision($entity);

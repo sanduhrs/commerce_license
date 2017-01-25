@@ -133,6 +133,22 @@ function commerce_license_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      // Defaults to NULL to distinguish a lack of data from user 0 (anonymous,
+      // or Drush).
+      'revision_uid' => array(
+        'description' => 'The {users}.uid of the user who created the revision.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'log' => array(
+        'description' => 'The log entry explaining the changes in this revision.',
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'default' => NULL,
+      ),
     ),
     'primary key' => array('revision_id'),
     'indexes' => array(
@@ -147,6 +163,10 @@ function commerce_license_schema() {
       'product' => array(
         'table' => 'commerce_product',
         'columns' => array('product_id' => 'product_id'),
+      ),
+      'revision_uid' => array(
+        'table' => 'users',
+        'columns' => array('revision_uid' => 'uid'),
       ),
     ),
   );
@@ -330,3 +350,28 @@ function commerce_license_update_7102(&$sandbox) {
     }
   }
 }
+
+/**
+ * Add the 'revision_uid' and 'log' columns to the commerce_license_revision table.
+ */
+function commerce_license_update_7103() {
+  if (!db_field_exists('commerce_license_revision', 'revision_uid')) {
+    db_add_field('commerce_license_revision', 'revision_uid', array(
+      'description' => 'The {users}.uid of the user who created the revision.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => FALSE,
+      'default' => NULL,
+    ));
+  }
+  if (!db_field_exists('commerce_license_revision', 'log')) {
+    db_add_field('commerce_license_revision', 'log', array(
+      'description' => 'The log entry explaining the changes in this revision.',
+      'type' => 'text',
+      'not null' => FALSE,
+      'size' => 'big',
+      'default' => NULL,
+    ));
+  }
+}
+

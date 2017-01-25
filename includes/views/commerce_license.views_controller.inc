@@ -23,6 +23,11 @@ class CommerceLicenseViewsController extends EntityDefaultViewsController {
       ),
     );
 
+    // Make the log handler match the one in Commerce Order.
+    $data['commerce_license_revision']['log']['field']['handler'] = 'views_handler_field_xss';
+    unset($data['commerce_license_revision']['log']['argument']);
+    unset($data['commerce_license_revision']['log']['sort']);
+
     return $data;
   }
 }

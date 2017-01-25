@@ -68,6 +68,34 @@ class CommerceLicenseMetadataController extends EntityDefaultMetadataController 
       'setter callback' => 'entity_property_verbatim_set',
       'schema field' => 'expires',
     );
+    $properties['revised_by'] = array(
+      'type' => 'user',
+      'label' => t('Revised by'),
+      'description' => t('The creator of the license revision.'),
+      'setter callback' => 'entity_property_verbatim_set',
+      'schema field' => 'revision_uid',
+    );
+    $properties['revision_created'] = array(
+      'type' => 'date',
+      'label' => t('Revision created'),
+      'description' => t('The date when the license revision was created.'),
+      'setter callback' => 'entity_property_verbatim_set',
+      'schema field' => 'revision_created',
+    );
+    $properties['revision_ended'] = array(
+      'type' => 'date',
+      'label' => t('Revision ends'),
+      'description' => t('The date when the license revision ended, if any.'),
+      'setter callback' => 'entity_property_verbatim_set',
+      'schema field' => 'revision_ended',
+    );
+    $properties['log'] = array(
+      'type' => 'text',
+      'label' => t('Revision log'),
+      'description' => t('The log message for this license revision, if any.'),
+      'setter callback' => 'entity_property_verbatim_set',
+      'schema field' => 'log',
+    );
     // entity_token uses this to provide [commerce_license:access-details].
     $properties['access_details'] = array(
       'label' => t('Access details'),
