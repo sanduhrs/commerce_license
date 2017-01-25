@@ -52,12 +52,14 @@ function commerce_license_schema() {
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
+        'size' => 'big',
       ),
       'expires' => array(
         'description' => 'The Unix timestamp when the license expires. 0 for never.',
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
+        'size' => 'big',
       ),
       'expires_automatically' => array(
         'description' => 'Whether the module should expire the license automatically.',
@@ -126,12 +128,14 @@ function commerce_license_schema() {
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
+        'size' => 'big',
       ),
       'revision_ended' => array(
         'description' => 'The Unix timestamp when the revision ended.',
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
+        'size' => 'big',
       ),
       // Defaults to NULL to distinguish a lack of data from user 0 (anonymous,
       // or Drush).
@@ -373,5 +377,20 @@ function commerce_license_update_7103() {
       'default' => NULL,
     ));
   }
+}
+
+/**
+ * Update all timestamp columns to use bigint instead of int.
+ */
+function commerce_license_update_7104(&$sandbox) {
+  $schema = drupal_get_schema_unprocessed('commerce_license', 'commerce_license');
+  db_change_field('commerce_license', 'expires', 'expires', $schema['fields']['expires']);
+  db_change_field('commerce_license', 'granted', 'granted', $schema['fields']['granted']);
+
+  $schema = drupal_get_schema_unprocessed('commerce_license', 'commerce_license_revision');
+  db_change_field('commerce_license_revision', 'revision_created', 'revision_created', $schema['fields']['revision_created']);
+  db_change_field('commerce_license_revision', 'revision_ended', 'revision_ended', $schema['fields']['revision_ended']);
+
+  return t('Updated all timestamp fields to accomodate larger values.');
 }
 
