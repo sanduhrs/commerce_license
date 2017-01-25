@@ -769,6 +769,7 @@ function commerce_license_form_commerce_cart_add_to_cart_form_alter(&$form, &$fo
  *   An array of product type machine names.
  */
 function commerce_license_configure_product_types($types) {
+  field_cache_clear();
   $field = field_info_field('commerce_license_type');
   if (!$field) {
     $field = array(
