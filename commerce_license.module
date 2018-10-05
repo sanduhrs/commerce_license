@@ -1231,21 +1231,25 @@ function commerce_license_action_info() {
       'type' => 'commerce_license',
       'label' => t('Activate license'),
       'configurable' => FALSE,
+      'triggers' => array('any'),
     ),
     'commerce_license_suspend_action' => array(
       'type' => 'commerce_license',
       'label' => t('Suspend license'),
       'configurable' => FALSE,
+      'triggers' => array('any'),
     ),
     'commerce_license_revoke_action' => array(
       'type' => 'commerce_license',
       'label' => t('Revoke license'),
       'configurable' => FALSE,
+      'triggers' => array('any'),
     ),
     'commerce_license_renew_action' => array(
       'type' => 'commerce_license',
       'label' => t('Renew license'),
       'configurable' => TRUE,
+      'triggers' => array('any'),
     ),
   );
 }
