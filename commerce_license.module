@@ -539,10 +539,14 @@ function commerce_license_get_order_licenses($order, $configurable = FALSE) {
   $licenses = array();
   $wrapper = entity_metadata_wrapper('commerce_order', $order);
   foreach ($wrapper->commerce_line_items as $line_item_wrapper) {
-    if (isset($line_item_wrapper->commerce_license)) {
-      $license = $line_item_wrapper->commerce_license->value();
-      if ($license && (!$configurable || $license->isConfigurable())) {
-        $licenses[$license->license_id] = $license;
+    $field_instances = field_info_instances('commerce_line_item', $line_item_wrapper->getBundle());
+    foreach ($field_instances as $field_name => $field_instance) {
+      $field_info = field_info_field($field_name);
+      if ($field_info['type'] === 'entityreference' && $field_info['settings']['target_type'] == 'commerce_license' && isset($line_item_wrapper->{$field_name})) {
+        $license = $line_item_wrapper->{$field_name}->value();
+        if ($license && (!$configurable || $license->isConfigurable())) {
+          $licenses[$license->license_id] = $license;
+        }
       }
     }
   }
