@@ -32,16 +32,12 @@ class CommerceLicenseEntityController extends EntityBundlePluginEntityController
     if ($entity->is_new_revision) {
       $current_time = commerce_license_get_time();
 
-      if (!isset($entity->revision_created)) {
-        $entity->revision_created = $current_time;
-      }
-      if (!isset($entity->revision_ended)) {
-        $entity->revision_ended = 0;
-      }
-      if (!isset($entity->revision_uid)) {
-        $entity->revision_uid = $GLOBALS['user']->uid;
-      }
-      if (!isset($entity->log)) {
+      $entity->revision_created = $current_time;
+      $entity->revision_ended = 0;
+      $entity->revision_uid = $GLOBALS['user']->uid;
+
+      // Clear the log if it's unset, or the same as the previous revision's.
+      if (empty($entity->log) || $entity->log == $entity->original->log) {
         $entity->log = '';
       }
 
@@ -52,9 +48,6 @@ class CommerceLicenseEntityController extends EntityBundlePluginEntityController
           ->condition('revision_id', $entity->revision_id)
           ->execute();
       }
-    }
-    else {
-      unset($entity->log);
     }
 
     parent::saveRevision($entity);
