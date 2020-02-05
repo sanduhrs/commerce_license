@@ -41,7 +41,13 @@ class EntityLabel extends CoreEntityLabel {
     }
 
     foreach ($entity_ids_per_type as $type => $ids) {
-      $this->loadedReferencers[$type] = $this->entityManager->getStorage($type)->loadMultiple($ids);
+      // Need to use ->entityTypeManager for Drupal >= 8.8.
+      if (property_exists($this, 'entityTypeManager')) {
+        $this->loadedReferencers[$type] = $this->entityTypeManager->getStorage($type)->loadMultiple($ids);
+      }
+      else {
+        $this->loadedReferencers[$type] = $this->entityManager->getStorage($type)->loadMultiple($ids);
+      }
     }
   }
 
