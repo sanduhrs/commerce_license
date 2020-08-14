@@ -22,14 +22,14 @@ class LicenseForm extends ContentEntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label License.', [
+        $this->messenger()->addStatus($this->t('Created the %label License.', [
           '%label' => $entity->label(),
         ]));
 
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label License.', [
+        $this->messenger()->addStatus($this->t('Saved the %label License.', [
           '%label' => $entity->label(),
         ]));
     }

@@ -7,7 +7,7 @@ use Drupal\Core\Plugin\PluginBase;
 /**
  * Provides the base license type class.
  */
-abstract class SynchronizableBase extends Base implements LicenseTypeSynchronizableInterface {
+abstract class SynchronizableBase implements LicenseTypeSynchronizableInterface {
 
   /**
    * {@inheritdoc}

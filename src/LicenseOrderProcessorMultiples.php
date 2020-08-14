@@ -48,9 +48,9 @@ class LicenseOrderProcessorMultiples implements OrderProcessorInterface {
           // In the latter case, the message isn't as clear as it could be, but
           // site builders should be hiding the quantity field from the add to
           // cart form for license products, so this is moot.
-          drupal_set_message(t("You may only have one of @product-label in your cart.", [
+          \Drupal::messenger()->addError(t("You may only have one of @product-label in your cart.", [
             '@product-label' => $purchased_entity->label(),
-          ]), 'error');
+          ]));
         }
       }
     }

@@ -67,10 +67,10 @@ class LicenseMultiplesCartEventSubscriber implements EventSubscriberInterface {
     // Force the quantity back to 1.
     $this->forceOrderItemQuantity($order_item);
 
-    drupal_set_message(t('You may only have one of @product-label in <a href="@cart-url">your cart</a>.', [
+    \Drupal::messenger()->addError(t('You may only have one of @product-label in <a href="@cart-url">your cart</a>.', [
       '@product-label' => $order_item->getPurchasedEntity()->label(),
       '@cart-url' => Url::fromRoute('commerce_cart.page')->toString(),
-    ]), 'error');
+    ]));
   }
 
   /**
@@ -101,9 +101,9 @@ class LicenseMultiplesCartEventSubscriber implements EventSubscriberInterface {
 
     // Don't show a link to the cart as the user will typically be on the cart
     // page.
-    drupal_set_message(t('You may only have one of @product-label in your cart.', [
+    \Drupal::messenger()->addError(t('You may only have one of @product-label in your cart.', [
       '@product-label' => $order_item->getPurchasedEntity()->label(),
-    ]), 'error');
+    ]));
   }
 
   /**

@@ -119,7 +119,7 @@ class LicenseAvailabilityCheckerExistingRights implements AvailabilityCheckerInt
       $message = $rights_check_message . ' ' . t("You may not purchase the @product-label product.", [
         '@product-label' => $entity->label(),
       ]);
-      drupal_set_message($message);
+      \Drupal::messenger()->addStatus($message);
 
       return FALSE;
     }
